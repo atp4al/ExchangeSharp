@@ -250,7 +250,7 @@ namespace ExchangeSharp
                 foreach (JToken childToken in token["data"])
                 {
                     ticker = ParseTickerWebSocket(childToken);
-                    tickerList.Add(new KeyValuePair<string, ExchangeTicker>(ticker.Volume.QuoteCurrency, ticker));
+                    tickerList.Add(new KeyValuePair<string, ExchangeTicker>(ticker.MarketSymbol, ticker));
                 }
                 if (tickerList.Count != 0)
                 {
@@ -565,7 +565,7 @@ namespace ExchangeSharp
                 payload["symbol"] = marketSymbol;
                 if (afterDate != null)
                 {
-                    payload["startTime"] = afterDate.Value.UnixTimestampFromDateTimeMilliseconds();
+                    payload["startTime"] = Math.Round(afterDate.Value.UnixTimestampFromDateTimeMilliseconds());
                 }
                 JToken token = await MakeJsonRequestAsync<JToken>("/allOrders", BaseUrlPrivate, payload);
                 foreach (JToken order in token)

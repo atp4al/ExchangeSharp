@@ -51,7 +51,8 @@ namespace ExchangeSharp
         {
             if (exchangeSymbolToNormalizedSymbol.TryGetValue(marketSymbol, out string normalizedSymbol))
             {
-                return base.ExchangeMarketSymbolToGlobalMarketSymbolWithSeparator(normalizedSymbol.Substring(0, 3) + GlobalMarketSymbolSeparator + normalizedSymbol.Substring(3), GlobalMarketSymbolSeparator);
+                int pos = (normalizedSymbol.Length == 6 ? 3 : (normalizedSymbol.Length == 7 ? 4 : throw new InvalidOperationException("Cannot normalize symbol " + normalizedSymbol)));
+                return base.ExchangeMarketSymbolToGlobalMarketSymbolWithSeparator(normalizedSymbol.Substring(0, pos) + GlobalMarketSymbolSeparator + normalizedSymbol.Substring(pos), GlobalMarketSymbolSeparator);
             }
             throw new ArgumentException($"Symbol {marketSymbol} not found in Kraken lookup table");
         }
